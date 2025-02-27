@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Listing Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.31.0/solana-web3.min.js"></script> -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.31.0/solana-web3.min.js"></script> -->
+    <script src="scripts/forge.min.js" defer></script>
+    <script src="scripts/index.iife.min.js" defer></script>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <style>
+        .payment-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .payment-container h2 {
+            margin-bottom: 10px;
+        }
+        .payment-container button {
+            background-color: #f5a623;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .payment-container button:hover {
+            background-color: #d4881e;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+        .modal-content input {
+            width: 90%;
+            margin: 10px 0;
+            padding: 8px;
+        }
+        .modal-content button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Available Lands for Sale</h1>
+    </header>
+    <main>
+        <section id="wallet-section">
+            <h2>Wallet Management</h2>
+            <button id="create-wallet-btn">Create Wallet</button>
+            <button id="download-key-btn" style="display: none;">Download Private Key</button>
+            <input type="file" id="upload-key-file" style="display: none;">
+            <button id="upload-key-btn">Upload Private Key</button>
+            <p id="publicKey"></p>
+            <p id="balance"></p>
+            <input type="text" id="recipient" placeholder="Recipient Address" value="3Wj9BHs2N75vgEKNGM62QGEPToRQcopK1giZCG2iMCX3">
+            <input type="number" id="amount" placeholder="Amount (SOL)">
+            <button id="send-sol-btn">Send SOL</button>
+            <p id="transactionStatus"></p>
+        </section>
+        <section id="land-list">
+            <h2>Land Listings</h2>
+            <ul id="land-items">
+                <!-- Land items will be dynamically populated here -->
+            </ul>
+        </section>
+        <section id="land-details" style="display: none;">
+            <h2>Land Details</h2>
+            <div id="details-content"></div>
+        </section>
+        <section id="payment-section" style="display: none;">
+            <h2>Payment for Inquiry</h2>
+            <p>Please pay an inquiry fee of $5-10.</p>
+            <button id="pay-sol-btn">Pay with Solana/USDT</button>
+            <button id="pay-flutterwave-btn">Pay with Flutterwave</button>
+            <div id="payment-status" style="display: none;"></div>
+        </section>
+        <section id="agent-selection" style="display: none;">
+            <h2>Select Legal Agent</h2>
+            <select id="agent-list">
+                <!-- Agent options will be populated here -->
+            </select>
+            <div id="agent-contact" style="display: none;">
+                <p>Email: <span id="agent-email"></span></p>
+                <p>Telegram: <span id="agent-telegram"></span></p>
+            </div>
+        </section>
+        <section id="final-message" style="display: none;">
+            <h2>Thank You!</h2>
+            <p>Your transaction has been approved. You have successfully acquired the land!</p>
+        </section>
+
+
+        <!-- Modify the modal to only request email -->
+        <div class="modal" id="userModal">
+            <div class="modal-content">
+                <h3>Enter Your Email</h3>
+                <input type="email" id="email" placeholder="Enter your email">
+                <button id="submitDetails">Continue to Payment</button>
+            </div>
+        </div>
+
+
+    </main>
+    <script>
+        const SERVER_URL = "http://127.0.0.1:5000"; // Change this URL when needed
+
+
+        document.getElementById("pay-flutterwave-btn").addEventListener("click", function () {
+            document.getElementById("userModal").style.display = "flex";
+        });
+        // using just email
+        document.getElementById("submitDetails").addEventListener("click", function () {
+            let email = document.getElementById("email").value;
+
+            if (!email) {
+                alert("Email is required.");
+                return;
+            }
+
+            document.getElementById("userModal").style.display = "none";
+
+            FlutterwaveCheckout({
+                public_key: "FLWPUBK_TEST-7909b193be2429cae121b42c7cbcdb4f-X",
+                tx_ref: "tx-" + Date.now(),
+                amount: 10,
+                currency: "USD",
+                payment_options: "card, ussd, banktransfer",
+                customer: { email },
+                customizations: {
+                    title: "My Website Payment",
+                    description: "Payment for services",
+                    logo: "https://via.placeholder.com/150",
+                },
+
+                callback: function (data) {
+                    alert("Payment successful! Transaction Reference: " + data.transaction_id);
+
+                    fetch(`${SERVER_URL}/verify-payment/${data.transaction_id}`, { method: 'GET' })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json().catch(() => {
+                                throw new Error("Invalid JSON response from server");
+                            });
+                        })
+                        .then(result => {
+                            alert(result.message || "Payment verification successful!");
+                        })
+                        .catch(error => {
+                            console.error('Error verifying payment:', error);
+                            alert("An error occurred while verifying payment. Please try again.");
+                        });
+                },
+
+                onclose: function () {
+                    alert("Transaction closed. No payment was made.");
+                },
+            });
+        });
+    </script>
+
+    <script src="scripts/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "land-listing-website",
+  "version": "1.0.0",
+  "description": "A simple and efficient website for listing lands available for sale.",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "live-server src",
+    "build": "echo 'Build step not defined yet.'"
+  },
+  "keywords": [
+    "land",
+    "listing",
+    "real estate",
+    "property"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}

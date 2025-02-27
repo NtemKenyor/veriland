@@ -1,0 +1,246 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+main {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1, h2 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #fff;
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+li:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+li img {
+    width: 50px;
+    height: 50px;
+    margin-right: 1rem;
+    border-radius: 8px;
+}
+
+li .details {
+    flex-grow: 1;
+}
+
+li .price {
+    color: #007BFF;
+    font-weight: bold;
+    position: absolute;
+    right: 1rem;
+}
+
+button {
+    background: linear-gradient(45deg, #007BFF, #00C6FF);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    font-size: 1rem;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #0056b3, #0096c7);
+    transform: scale(1.05);
+}
+
+section {
+    margin: 1rem 0;
+}
+
+#payment-status, #final-payment-status {
+    margin-top: 1rem;
+    color: red;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.land-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.land-item {
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 15px;
+    flex: 1 1 calc(30% - 20px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.land-item h2 {
+    margin: 0 0 10px;
+}
+
+.land-item p {
+    margin: 5px 0;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    background: #5cb85c;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.button:hover {
+    background: #4cae4c;
+}
+
+/* .details {
+    display: none;
+    margin-top: 20px;
+} */
+
+.payment {
+    display: none;
+    margin-top: 20px;
+}
+
+.agent-selection {
+    display: none;
+    margin-top: 20px;
+}
+
+.agent-info {
+    display: none;
+    margin-top: 10px;
+}
+
+.success-message, .error-message {
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.success-message {
+    background: #dff0d8;
+    color: #3c763d;
+}
+
+.error-message {
+    background: #f2dede;
+    color: #a94442;
+}
+
+/* Pop-up styles */
+#land-details {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+#land-details .content {
+    background-color: #333;
+    padding: 1.5rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#land-details .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: #ff0000;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#land-details .close-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+    #land-details {
+        width: 30%;
+        height: 100%;
+        right: 0;
+        left: auto;
+        background-color: #fff;
+        color: #333;
+    }
+
+    #land-details .content {
+        background-color: #fff;
+        color: #333;
+    }
+
+    #land-details .close-btn {
+        background-color: #333;
+        color: #fff;
+    }
+
+    #land-details .close-btn:hover {
+        background-color: #555;
+    }
+}

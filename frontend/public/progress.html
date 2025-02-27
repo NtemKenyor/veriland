@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexible Multi-Step Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .progress-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .step {
+            flex: 1;
+            padding: 10px;
+            cursor: pointer;
+            background: #ddd;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .step.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 5px;
+            transition: width 0.3s ease-in-out;
+        }
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Flexible Multi-Step Form</h2>
+
+    <!-- Progress Steps -->
+    <div class="progress-container">
+        <div class="step" onclick="goToStep(0)">Step 1</div>
+        <div class="step" onclick="goToStep(1)">Step 2</div>
+        <div class="step" onclick="goToStep(2)">Step 3</div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <!-- Form Sections -->
+    <form id="multiStepForm">
+        <div class="form-section">
+            <h3>Section 1</h3>
+            <input type="text" id="name" placeholder="Enter your name" required>
+            <button type="button" onclick="nextSection()">Next</button>
+        </div>
+
+        <div class="form-section">
+            <h3>Section 2</h3>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <button type="button" onclick="nextSection()">Next</button>
+        </div>
+
+        <div class="form-section">
+            <h3>Section 3</h3>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    <script>
+        let currentStep = localStorage.getItem("currentStep") ? parseInt(localStorage.getItem("currentStep")) : 0;
+        const sections = document.querySelectorAll(".form-section");
+        const steps = document.querySelectorAll(".step");
+        const progressBar = document.getElementById("progress-bar");
+        const inputs = document.querySelectorAll("input");
+
+        // Load saved input values
+        inputs.forEach(input => {
+            const savedValue = localStorage.getItem(input.id);
+            if (savedValue) {
+                input.value = savedValue;
+            }
+
+            // Save value on change
+            input.addEventListener("input", () => {
+                localStorage.setItem(input.id, input.value);
+            });
+        });
+
+        // Show the correct section
+        function showSection(step) {
+            sections.forEach((section, index) => {
+                section.classList.toggle("active", index === step);
+                steps[index].classList.toggle("active", index <= step);
+            });
+            updateProgressBar();
+        }
+
+        // Move to the next section
+        function nextSection() {
+            if (currentStep < sections.length - 1) {
+                currentStep++;
+                localStorage.setItem("currentStep", currentStep);
+                showSection(currentStep);
+            }
+        }
+
+        // Allow user to go to a specific step
+        function goToStep(step) {
+            currentStep = step;
+            localStorage.setItem("currentStep", currentStep);
+            showSection(currentStep);
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            let progress = ((currentStep + 1) / sections.length) * 100;
+            progressBar.style.width = progress + "%";
+        }
+
+        // Show the last saved section
+        showSection(currentStep);
+
+        // Form Submission
+        document.getElementById("multiStepForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Collect all saved data
+            let formData = {};
+            inputs.forEach(input => {
+                formData[input.id] = input.value;
+            });
+
+            console.log("Submitting Data:", formData); // Replace with actual server request
+
+            // Simulate sending data to the server (replace with fetch/axios)
+            alert("Form submitted! Check console for data.");
+            
+            // Clear localStorage after submission
+            localStorage.clear();
+        });
+    </script>
+
+</body>
+</html>
