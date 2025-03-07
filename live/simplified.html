@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>verilandUI</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="bs/css/bootstrap.min.css">
+        <style>
+          .navbar-brand img { height: 50px; }
+          .navbar-nav { padding-left: 400px; }
+          .header { font-family: Verdana, Geneva, Tahoma, sans-serif; }
+          body { background-color: beige; }
+          .lands img { height: 150px; }
+          .slider { padding-left: 30px; }
+          #country {
+            width: 200px;
+            height: 230px;
+            display: inline-block;
+            border-radius: 10px;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: transform 0.5s;
+            background-position: center;
+            background-size: cover;
+            margin: 5px 5px;
+          }
+          h4 { padding-top: 180px; }
+          .card-1 { background-image: url(images/argentina.jpg); }
+          .card-2 { background-image: url(images/canada.jpg); }
+          .card-3 { background-image: url(images/nigeria.jpg); }
+          .card-4 { background-image: url(images/korea.jpg); }
+          .card-5 { background-image: url(images/italy.jpg); }
+          .card-6 { background-image: url(images/Australia.jpg); }
+          .card:hover { transform: translateY(-10px); }
+          .agent-lead {
+            text-align: center;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            padding-top: 100px;
+          }
+          .menu { background-color: beige; }
+          .icon .img { width: 20px; height: 20px; }
+          .team {
+            background-image: url(images/land3.jpg);
+            background-size: cover;
+            background-position: center;
+          }
+          .team-members { padding-top: 100px; padding-left: 50px; }
+          .team-all { padding-top: 100px; }
+          .full-screen-carousel { height: 100vh; position: relative; }
+          .full-screen-carousel .carousel-item { height: 100vh; }
+          .full-screen-carousel .carousel-item img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+          }
+          .carousel-caption {
+            top: 50%;
+            transform: translateY(-50%);
+            bottom: initial;
+          }
+          .carousel-caption h1 { font-size: 4rem; font-weight: bold; }
+          .carousel-caption p { font-size: 1.5rem; }
+          .carousel-caption .btn { margin-top: 20px; }
+
+
+          .carousel-caption {
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+            padding: 20px; /* Add padding around the text */
+            border-radius: 10px; /* Rounded corners for the background */
+            border: 2px solid rgba(255, 255, 255, 0.2); /* Light border for contrast */
+            margin: 20px; /* Add margin to separate the caption from the edges */
+        }
+
+        .carousel-caption h1 {
+            color: white; /* Ensure text is white */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add a shadow for better readability */
+            margin-bottom: 15px; /* Space between h1 and p */
+            font-size: 3rem; /* Adjust font size if needed */
+        }
+
+        .carousel-caption p {
+            color: white; /* Ensure text is white */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add a shadow for better readability */
+            font-size: 1.5rem; /* Adjust font size if needed */
+        }
+        </style>
+    </head>
+    <body>
+        <wrapper>
+            <div class="menu fixed-top">
+                <nav class="navbar navbar-expand-md">
+                    <div class="container-fluid">
+                        <a class="navbar-brand text-white" href="#"><img src="images/logomain.png"></a>
+                        <button type="button" class="navbar-toggler" data-bs-target="#Mymenu" data-bs-toggle="collapse">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                    <div id="Mymenu" class="collapse navbar-collapse">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link active" href="#"><b>Home</b></a></li>
+                            <li class="nav-item"><a href="#" class="nav-link abt">List</a></li>
+                            <!-- <li class="nav-item"><a class="nav-link abt" href="#">Testimonials</a></li>
+                            <li class="nav-item"><a class="nav-link abt" href="#">News</a></li> -->
+                            <li class="nav-item"><a class="nav-link abt" href="#">ContactUs</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
+            <section class="full-screen-carousel">
+                <div class="carousel slide" id="mycarousel" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="images/house1.jpg" class="d-block w-100">
+                            <div class="carousel-caption">
+                                <h1>veriland</h1>
+                                <p>VeriLand is a decentralized real estate and asset acquisition platform on Solana, 
+                                  enabling buyers to securely purchase, develop, mine, or build on physical properties 
+                                  while ensuring legal verification and protection through verified agents.</p>
+                                <a href="#listed-lands" class="btn btn-primary btn-lg">View Listing</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="listed-lands" class="listingLand">
+                <div class="Lands container">
+                    <h3 class="mb-5">Listed Lands</h3>
+                    <div class="row" id="property-list">
+                        <!-- Property cards will be dynamically inserted here -->
+                    </div>
+                </div>
+            </section>
+        </wrapper>
+
+        <script src="bs/js/bootstrap.min.js" async defer></script>
+        <script>
+            // JSON data for properties
+            const properties = [
+                {
+                    name: "Sunny Villa",
+                    location: "Abuja",
+                    size: "500 sqm",
+                    country: "Nigeria",
+                    amount: "$1000",
+                    description: "A beautiful villa in the heart of Abuja.",
+                    image: "images/house6.jpg"
+                },
+                {
+                    name: "Urban Apartment",
+                    location: "Ikeja",
+                    size: "300 sqm",
+                    country: "Nigeria",
+                    amount: "$2000",
+                    description: "A modern apartment in Ikeja.",
+                    image: "images/house6.jpg"
+                }
+            ];
+
+            // Function to generate property cards
+            function renderProperties() {
+                const propertyList = document.getElementById('property-list');
+                propertyList.innerHTML = properties.map((property, index) => `
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 pb-3">
+                        <div class="card" onclick="viewProperty(${index})">
+                            <img src="${property.image}" class="card-img-top" alt="${property.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${property.name}</h5>
+                                <p class="card-text">${property.location} - ${property.amount}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Function to redirect to property details page
+            function viewProperty(index) {
+                const property = properties[index];
+                const params = new URLSearchParams(property);
+                window.location.href = `property.html?${params.toString()}`;
+            }
+
+            // Render properties on page load
+            renderProperties();
+        </script>
+    </body>
+</html>

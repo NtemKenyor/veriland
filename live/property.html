@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Property Details</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="bs/css/bootstrap.min.css">
+        <style>
+            body {
+                background-color: #f8f9fa;
+                font-family: 'Arial', sans-serif;
+            }
+            .property-details {
+                margin-top: 20px;
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .property-details h2 {
+                color: #333;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            .property-details p {
+                font-size: 1.1rem;
+                color: #555;
+                margin-bottom: 10px;
+            }
+            .agent-list {
+                margin-top: 20px;
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 10px;
+            }
+            .agent-list h4 {
+                color: #333;
+                font-weight: bold;
+                margin-bottom: 15px;
+            }
+            .agent-list select {
+                width: 100%;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #ddd;
+                font-size: 1rem;
+            }
+            .agent-list .btn {
+                margin-top: 15px;
+                width: 100%;
+                padding: 10px;
+                font-size: 1rem;
+            }
+            .warning {
+                color: red;
+                font-weight: bold;
+                margin-top: 20px;
+                text-align: center;
+            }
+            .modal-content {
+                padding: 20px;
+                border-radius: 10px;
+            }
+            .modal-header {
+                background-color: #007bff;
+                color: white;
+                border-radius: 10px 10px 0 0;
+            }
+            .modal-title {
+                font-weight: bold;
+            }
+            .modal-body {
+                padding: 20px;
+            }
+            .modal-footer {
+                border-top: 1px solid #ddd;
+                padding: 15px;
+            }
+            .agent-contact-details {
+                margin-top: 20px;
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 10px;
+                display: none; /* Hidden by default */
+            }
+            .agent-contact-details p {
+                font-size: 1rem;
+                color: #333;
+                margin-bottom: 10px;
+            }
+            .agent-contact-details .btn {
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container property-details">
+            <h2 id="property-name"></h2>
+            <p><strong>Location:</strong> <span id="property-location"></span></p>
+            <p><strong>Size:</strong> <span id="property-size"></span></p>
+            <p><strong>Country:</strong> <span id="property-country"></span></p>
+            <p><strong>Price:</strong> <span id="property-amount"></span></p>
+            <p><strong>Description:</strong> <span id="property-description"></span></p>
+
+            <div class="agent-list">
+                <h4>Select an Agent</h4>
+                <select id="agent-select">
+                    <option value="agent1">Agent 1 - $10 (90% Score)</option>
+                    <option value="agent2">Agent 2 - $15 (85% Score)</option>
+                    <option value="agent3">Agent 3 - $20 (95% Score)</option>
+                </select>
+                <button class="btn btn-primary mt-3" onclick="showPaymentModal()">Connect with Agent</button>
+            </div>
+
+            <div class="warning">
+                <p>⚠️ Do not pay any money to the agent directly except through the platform to avoid being scammed.</p>
+            </div>
+
+            <!-- Agent Contact Details (Hidden by default) -->
+            <div id="agent-contact-details" class="agent-contact-details">
+                <h4>Agent Contact Details</h4>
+                <p><strong>Telegram ID:</strong> <span id="agent-telegram">@agent123</span></p>
+                <p><strong>Email:</strong> <span id="agent-email">agent@veriland.com</span></p>
+                <a href="https://t.me/agent123" target="_blank" class="btn btn-primary">Open Telegram</a>
+                <a href="mailto:agent@veriland.com" class="btn btn-secondary mt-2">Email Agent</a>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="paymentModalLabel">Pay Agent Fee</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Proceed to pay the agent fee securely through the platform.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="completePayment()">Complete Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="bs/js/bootstrap.min.js" async defer></script>
+        <script>
+            // Extract property details from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const property = {
+                name: urlParams.get('name'),
+                location: urlParams.get('location'),
+                size: urlParams.get('size'),
+                country: urlParams.get('country'),
+                amount: urlParams.get('amount'),
+                description: urlParams.get('description')
+            };
+
+            // Populate property details
+            document.getElementById('property-name').textContent = property.name;
+            document.getElementById('property-location').textContent = property.location;
+            document.getElementById('property-size').textContent = property.size;
+            document.getElementById('property-country').textContent = property.country;
+            document.getElementById('property-amount').textContent = property.amount;
+            document.getElementById('property-description').textContent = property.description;
+
+            // Show payment modal
+            function showPaymentModal() {
+                const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+                paymentModal.show();
+            }
+
+            // Simulate payment completion
+            function completePayment() {
+                // Hide the payment modal
+                const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                paymentModal.hide();
+
+                // Show the agent contact details
+                document.getElementById('agent-contact-details').style.display = 'block';
+            }
+        </script>
+    </body>
+</html>
